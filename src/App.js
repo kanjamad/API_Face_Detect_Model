@@ -1,25 +1,33 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import Particles from 'react-particles-js';
+import Navigation from './components/Navigation/Navigation';
+import Logo from './components/Logo/Logo';
+import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+// import Rank from './components/Rank/Rank';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+            <Particles 
+              params={{
+            		particles: {
+            			line_linked: {
+            				shadow: {
+            					enable: true,
+            					color: "#3CA9D1",
+            					blur: 5
+            				}
+            			}
+            		}
+            	}}
+            />
+       <Navigation/>
+       <Logo/>
+       <ImageLinkForm/>
+       {/* <FaceRecognition/>
+       <Rank/> */}
       </div>
     );
   }
