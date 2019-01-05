@@ -6,12 +6,7 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 // import Rank from './components/Rank/Rank';
 import './App.css';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-            <Particles 
-              params={{
+const particlesOptions = {
             		particles: {
             			line_linked: {
             				shadow: {
@@ -21,7 +16,13 @@ class App extends Component {
             				}
             			}
             		}
-            	}}
+            	}
+class App extends Component {
+  render() {
+    return (
+      <div className="App">
+          <Particles
+            params={particlesOptions}
             />
        <Navigation/>
        <Logo/>
