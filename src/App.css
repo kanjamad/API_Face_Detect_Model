@@ -7,6 +7,8 @@
   justify-content: center;
 }
 
+/* fix over written on top of everything,and everything else is below it. */
+/* This needs a bit of configuration, add somthing like className='particles' and create this articles class and my css in App.css  */
 .particles {
   position: fixed;
   top: 0;

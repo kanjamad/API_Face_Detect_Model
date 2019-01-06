@@ -4,7 +4,7 @@ import './ImageLinkForm.css';
 const ImageLinkForm = ({ onInputChange, onButtonSubmit }) => {
   return (
     <div>
-      <p className='f3'>
+    <p className='f3'> {/*-size of three-*/}
         {'This Magic Flower will detect faces in your pictures. Git it a try.'}
       </p>
       <div className='center'>
