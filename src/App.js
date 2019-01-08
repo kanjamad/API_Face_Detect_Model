@@ -10,7 +10,7 @@ import './App.css';
 
 //You must add your own API key here from Clarifai.
 const app = new Clarifai.App({
-  apiKey: 'API key'
+  apiKey: 'API Key'
  });
 
 // Particles.js library
@@ -32,9 +32,17 @@ class App extends Component {
     this.state = {
       input: '',
       imageUrl: '', //should get displayed when I click on submit
+      box: {}, // face box,then build funtion call calculateFaceLocation 
     }  
   }
 
+  calculateFaceLocation  = (data) =>{ //this function will based on the inputs that get from Clarifai.
+  const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+  const image = document.getElementById('inputimage');// inputimage will grabbed it, bounding_box is a percentage of the image 
+  const width = Number(image.width);
+  const height = Number(image.height);
+   console.log(width.height);
+  }
   //Anytime there's some sort of an event listener on a web page, I receive an event  
   onInputChange = (event) => {
     this.setState({input: event.target.value});
@@ -44,18 +52,13 @@ class App extends Component {
     this.setState({imageUrl: this.state.input});  //I can pass the imageUrl down to the FaceRecognition
     app.models.predict(
       Clarifai.FACE_DETECT_MODEL, 
-//this.state.imageUrl) the way setState work
-      this.state.input) //I can give my url as the input over here, just put this.state.input
-      .then(
-      function(response) {
-      // I need to get response dot output and then the zero(0) the first array, then it was 'data', 'regions', 'Zero(0)', 'region info', then 'bounding box'.
-        console.log(response.outputs[0].data.regions[0].region_info.bounding_box);
-      },
-      function(err) {
-        // there was an error
-      }
-    );
+      this.state.input) //I can give my url as the input over here, just put this.state.input, //this.state.imageUrl error ;the way setState work
+      .then(response => this.calculateFaceLocation (response))// using ES6 // use response will call calculateFaceLocation //this. because using class 
+      .catch(err => console.log(err))
   }
+
+
+
 
 
 
