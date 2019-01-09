@@ -36,13 +36,24 @@ class App extends Component {
     }  
   }
 
-  calculateFaceLocation  = (data) =>{ //this function will based on the inputs that get from Clarifai.
-  const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-  const image = document.getElementById('inputimage');// inputimage will grabbed it, bounding_box is a percentage of the image 
-  const width = Number(image.width);
-  const height = Number(image.height);
-   console.log(width.height);
+    calculateFaceLocation  = (data) =>{ //this function will based on the inputs that get from Clarifai.
+    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById('inputimage');// inputimage will grabbed it, bounding_box is a percentage of the image 
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - (clarifaiFace.right_col * width),
+      bottomRow: height - (clarifaiFace.bottom_row * height)
+    }
   }
+   // this funtion will receive return value on the top ^
+   displaySizeFaceBox = (box) => {
+     console.log(box); // have an object, and have some number that's good and will go add CSS so that these numbers appear on the face.
+    this.setState({box: box});
+  }
+
   //Anytime there's some sort of an event listener on a web page, I receive an event  
   onInputChange = (event) => {
     this.setState({input: event.target.value});
@@ -53,8 +64,8 @@ class App extends Component {
     app.models.predict(
       Clarifai.FACE_DETECT_MODEL, 
       this.state.input) //I can give my url as the input over here, just put this.state.input, //this.state.imageUrl error ;the way setState work
-      .then(response => this.calculateFaceLocation (response))// using ES6 // use response will call calculateFaceLocation //this. because using class 
-      .catch(err => console.log(err))
+      .then(response => this.displaySizeFaceBox(this.calculateFaceLocation(response)))// using ES6 // use response will call calculateFaceLocation //this. because using class 
+      .catch(err => console.log(err));
   }
 
 
@@ -78,7 +89,7 @@ class App extends Component {
                 onInputChange={this.onInputChange}
                 onButtonSubmit={this.onButtonSubmit}
               />
-       <FaceRecognition imageUrl={this.state.imageUrl} />
+       <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
       </div>
     );
   }
