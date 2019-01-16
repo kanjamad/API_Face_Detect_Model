@@ -1,3 +1,11 @@
 .Tilt {
-  background: linear-gradient(89deg, rgb(233, 149, 24) 0%, rgb(228, 127, 161) 100%);  /* w3c */
+  background-color:rgb(216, 205, 210);
+  background-image: linear-gradient(30deg, rgb(233, 149, 24) 12%, transparent 12.5%, transparent 87%, rgb(233, 149, 24) 87.5%, rgb(233, 149, 24)),
+  linear-gradient(150deg, rgb(233, 149, 24) 12%, transparent 12.5%, transparent 87%, rgb(233, 149, 24) 87.5%, rgb(233, 149, 24)),
+  linear-gradient(30deg, rgb(233, 149, 24) 12%, transparent 12.5%, transparent 87%, rgb(233, 149, 24) 87.5%, rgb(233, 149, 24)),
+  linear-gradient(150deg, rgb(233, 149, 24) 12%, transparent 12.5%, transparent 87%, rgb(233, 149, 24) 87.5%,rgb(233, 149, 24)),
+  linear-gradient(60deg, rgb(228, 127, 161)25%, transparent 25.5%, transparent 75%, rgb(228, 127, 161) 75%, rgb(228, 127, 161)),
+  linear-gradient(60deg,  rgb(228, 127, 161) 25%, transparent 25.5%, transparent 75%, rgb(228, 127, 161) 75%, rgb(228, 127, 161));
+  background-size:80px 140px;
+  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px; /* https://leaverou.github.io/css3patterns/#japanese-cube */
 }
