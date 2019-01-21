@@ -11,7 +11,7 @@ import './App.css';
 
 //You must add your own API key here from Clarifai.
 const app = new Clarifai.App({
-  apiKey: 'API KEY'
+  apiKey: 'API key'
  });
 
 // Particles.js library
@@ -34,6 +34,7 @@ class App extends Component {
       input: '',
       imageUrl: '', //should get displayed when I click on submit
       box: {}, // face box,then build funtion call calculateFaceLocation 
+      route: 'signin' 
     }  
   }
 
@@ -69,7 +70,9 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
-
+  onRouteChange = (route) => {
+    this.setState({route: route});
+  }
 
 
 
@@ -83,15 +86,19 @@ class App extends Component {
           <Particles className='particles' 
             params={particlesOptions}
             />
-       <Navigation/>
-       <Signin/>
-       <Logo/>
-       <Rank/>
-              <ImageLinkForm
-                onInputChange={this.onInputChange}
-                onButtonSubmit={this.onButtonSubmit}
-              />
-       <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+       <Navigation onRouteChange={this.onRouteChange}/>
+       { this.state.route === 'signin'
+        ? <Signin onRouteChange={this.onRouteChange}/>
+        : <div>
+            <Logo/>
+            <Rank/>
+            <ImageLinkForm
+                  onInputChange={this.onInputChange}
+                  onButtonSubmit={this.onButtonSubmit}
+                />
+            <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+        </div>
+       }
       </div>
     );
   }
