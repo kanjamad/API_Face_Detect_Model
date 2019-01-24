@@ -12,7 +12,7 @@ import './App.css';
 
 //You must add your own API key here from Clarifai.
 const app = new Clarifai.App({
-  apiKey: 'API KYE'
+  apiKey: 'API KEY'
  });
 
 // Particles.js library
@@ -64,11 +64,12 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({imageUrl: this.state.input});  //I can pass the imageUrl down to the FaceRecognition
-    app.models.predict(
-      Clarifai.FACE_DETECT_MODEL, 
-      this.state.input) //I can give my url as the input over here, just put this.state.input, //this.state.imageUrl error ;the way setState work
-      .then(response => this.displaySizeFaceBox(this.calculateFaceLocation(response)))// using ES6 // use response will call calculateFaceLocation //this. because using class 
-      .catch(err => console.log(err));
+    app.models
+      .predict(
+        Clarifai.FACE_DETECT_MODEL, 
+        this.state.input) //I can give my url as the input over here, just put this.state.input, //this.state.imageUrl error ;the way setState work
+        .then(response => this.displaySizeFaceBox(this.calculateFaceLocation(response)))// using ES6 // use response will call calculateFaceLocation //this. because using class 
+        .catch(err => console.log(err));
   }
 
 
@@ -86,6 +87,7 @@ class App extends Component {
 
 
   render() {
+   const { isSignedIn, imageUrl, route, box } = this.state;
     return (
       <div className="App">   
 {/* Particles.js library */
@@ -93,9 +95,9 @@ class App extends Component {
 /* This needs a bit of configuration, add somthing like className='particles' and create this articles class and my css in App.css  */}
           <Particles className='particles' 
             params={particlesOptions}
-            />
-       <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange}/>
-       { this.state.route === 'home'
+          />
+       <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
+       { route === 'home'
         ? <div>
             <Logo/>
             <Rank/>
@@ -103,7 +105,7 @@ class App extends Component {
                   onInputChange={this.onInputChange}
                   onButtonSubmit={this.onButtonSubmit}
                 />
-            <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl} />
+            <FaceRecognition box={box} imageUrl={imageUrl} />
           </div>
         :(
           this.state.route === 'signin' 
