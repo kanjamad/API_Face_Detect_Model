@@ -12,7 +12,7 @@ import './App.css';
 
 //You must add your own API key here from Clarifai.
 const app = new Clarifai.App({
-  apiKey: 'API KEY'
+  apiKey: 'e2cbbd9e26ef4dee85b3ff3cd469caf0'
  });
 
 // Particles.js library
@@ -39,6 +39,21 @@ class App extends Component {
       isSignedIn: false
     }  
   }
+
+  //####################### add the server to conect ######################################
+  componentDidMount(){
+    fetch('http://localhost:3000/')
+      .then(response => response.json())
+      .then(console.log)
+  }
+
+
+
+
+
+
+
+  // ###################### end add the server to connect ###################################
 
     calculateFaceLocation  = (data) =>{ //this function will based on the inputs that get from Clarifai.
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
