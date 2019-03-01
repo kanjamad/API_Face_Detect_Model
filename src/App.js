@@ -41,17 +41,11 @@ class App extends Component {
   }
 
   //####################### add the server to conect ######################################
-  componentDidMount(){
-    fetch('http://localhost:3000/')
-      .then(response => response.json())
-      .then(console.log)
-  }
-
-
-
-
-
-
+  // componentDidMount(){
+  //   fetch('http://localhost:3000/')
+  //     .then(response => response.json())
+  //     .then(console.log)
+  // }
 
   // ###################### end add the server to connect ###################################
 
