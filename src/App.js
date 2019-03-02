@@ -12,7 +12,7 @@ import './App.css';
 
 //You must add your own API key here from Clarifai.
 const app = new Clarifai.App({
-  apiKey: 'e2cbbd9e26ef4dee85b3ff3cd469caf0'
+  apiKey: 'YOUR_API_HERE'
  });
 
 // Particles.js library
@@ -36,18 +36,26 @@ class App extends Component {
       imageUrl: '', //should get displayed when I click on submit
       box: {}, // face box,then build funtion call calculateFaceLocation 
       route: 'signin',
-      isSignedIn: false
-    }  
+      isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
+    }
   }
 
-  //####################### add the server to conect ######################################
-  // componentDidMount(){
-  //   fetch('http://localhost:3000/')
-  //     .then(response => response.json())
-  //     .then(console.log)
-  // }
-
-  // ###################### end add the server to connect ###################################
+  loadUser = (data) => {
+    this.setState({user: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    }})
+  }
 
     calculateFaceLocation  = (data) =>{ //this function will based on the inputs that get from Clarifai.
     const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
@@ -77,9 +85,25 @@ class App extends Component {
       .predict(
         Clarifai.FACE_DETECT_MODEL, 
         this.state.input) //I can give my url as the input over here, just put this.state.input, //this.state.imageUrl error ;the way setState work
-        .then(response => this.displaySizeFaceBox(this.calculateFaceLocation(response)))// using ES6 // use response will call calculateFaceLocation //this. because using class 
+        .then(response => {
+          if (response) {
+            fetch('http://localhost:3000/image', {
+              method: 'put',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({
+                id: this.state.user.id
+              })
+            })
+              .then(response => response.json())
+              .then(count => {
+                this.setState(Object.assign(this.state.user, { entries: count}))
+              })
+  
+          }
+          this.displayFaceBox(this.calculateFaceLocation(response))
+        })
         .catch(err => console.log(err));
-  }
+    }
 
 
 // Create a route state, will keeps track of where I am on the page
@@ -102,24 +126,27 @@ class App extends Component {
 {/* Particles.js library */
 /* fix over written on top of everything,and everything else is below it. */
 /* This needs a bit of configuration, add somthing like className='particles' and create this articles class and my css in App.css  */}
-          <Particles className='particles' 
-            params={particlesOptions}
-          />
-       <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
-       { route === 'home'
-        ? <div>
-            <Logo/>
-            <Rank/>
-            <ImageLinkForm
-                  onInputChange={this.onInputChange}
-                  onButtonSubmit={this.onButtonSubmit}
-                />
-            <FaceRecognition box={box} imageUrl={imageUrl} />
-          </div>
-        :(
-          this.state.route === 'signin' 
-          ? <Signin onRouteChange={this.onRouteChange}/>
-          : <Register onRouteChange={this.onRouteChange}/>
+          <Particles className='particles'
+          params={particlesOptions}
+        />
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+        { route === 'home'
+          ? <div>
+              <Logo />
+              <Rank
+                name={this.state.user.name}
+                entries={this.state.user.entries}
+              />
+              <ImageLinkForm
+                onInputChange={this.onInputChange}
+                onButtonSubmit={this.onButtonSubmit}
+              />
+              <FaceRecognition box={box} imageUrl={imageUrl} />
+            </div>
+          : (
+             route === 'signin'
+             ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+             : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
         )
        }
       </div>
