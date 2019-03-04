@@ -34,7 +34,7 @@ class Register extends React.Component {
     })
       .then(response => response.json())
       .then(user => {
-        if (user) {
+        if (user) {  //  how we use user from sever.js have res.json(database.users[database.users.length-1]);
           this.props.loadUser(user)
           this.props.onRouteChange('home');
         }

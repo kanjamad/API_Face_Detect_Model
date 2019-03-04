@@ -12,7 +12,7 @@ import './App.css';
 
 //You must add your own API key here from Clarifai.
 const app = new Clarifai.App({
-  apiKey: 'YOUR_API_HERE'
+  apiKey: 'API key'
  });
 
 // Particles.js library
@@ -47,6 +47,7 @@ class App extends Component {
     }
   }
 
+  // loadUser look to Register.js file
   loadUser = (data) => {
     this.setState({user: {
       id: data.id,
@@ -79,7 +80,8 @@ class App extends Component {
     this.setState({input: event.target.value});
   }    
 
-  onButtonSubmit = () => {
+  
+  onButtonSubmit = () => {  // perhaps a better name for this function onPictureSubmit()
     this.setState({imageUrl: this.state.input});  //I can pass the imageUrl down to the FaceRecognition
     app.models
       .predict(
@@ -96,9 +98,10 @@ class App extends Component {
             })
               .then(response => response.json())
               .then(count => {
-                this.setState(Object.assign(this.state.user, { entries: count}))
+                this.setState(prevState => {
+                  return Object.assign ({}, prevState.user, { entries: count})
               })
-  
+            })
           }
           this.displayFaceBox(this.calculateFaceLocation(response))
         })
